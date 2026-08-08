@@ -1,0 +1,576 @@
+Complete School LMS & ERP Master Architectural Blueprint
+Markdown
+# SCHOOL LMS & ERP MASTER ARCHITECTURAL BLUEPRINT
+================================================================================
+Platform Stack : PHP Laravel | Blade | Tailwind CSS | Alpine.js | MySQL
+Design System  : Glassmorphism Over Clean Flat Grid (Dashboard-First Functional UX)
+System Scope   : Complete K-12 / College School Management & E-Learning Platform
+================================================================================
+1. Executive System Interconnection & Cascade Engine
+In a fully functional school ecosystem, no module operates in isolation. Every administrative or academic action triggers cascading data flows across multiple subsystems:
+                                ┌───────────────────────────┐
+                                │   ACADEMIC SESSION ENGINE │
+                                └─────────────┬─────────────┘
+                                              │ Sets Active Year & Scope
+                                              ▼
+ ┌──────────────────────┐       ┌───────────────────────────┐       ┌──────────────────────┐
+ │ PARENT PROFILE ENGINE│ ────> │  STUDENT ENROLLMENT HUB   │ <──── │ TEACHER HR & PROFILE │
+ └──────────┬───────────┘       └─────────────┬─────────────┘       └──────────┬───────────┘
+            │                                 │                                │
+            │ Linked Parent ID                ├────────────────────────────────┼────────────────────────────────┐
+            ▼                                 ▼                                ▼                                ▼
+ ┌──────────────────────┐       ┌───────────────────────────┐       ┌──────────────────────┐       ┌──────────────────────┐
+ │   FINANCE & FEES     │       │   ATTENDANCE & TIMETABLE  │       │  EXAM & GRADEBOOK    │       │  LMS & CLASSROOM HUB │
+ └──────────────────────┘       └───────────────────────────┘       └──────────────────────┘       └──────────────────────┘
+   Generates Invoices             Absent Alert -> Parent SMS          Marks -> Report Cards          Homework & Downloads
+            │                                 │                                │                                │
+            └─────────────────────────────────┴────────────────────────────────┴────────────────────────────────┘
+                                              │
+                                              ▼
+                                ┌───────────────────────────┐
+                                │  AUXILIARY SUBSYSTEMS     │
+                                │ Transport/Hostel/Library  │
+                                └───────────────────────────┘
+Complete Cross-Module Cascade Workflows
+1. Admission $\rightarrow$ Academic Assignment $\rightarrow$ Automatic Invoicing $\rightarrow$ Auxiliary Allocation
+Step 1: Student profile is created under a specific Class and Section.
+Step 2: System looks up the active Fee Master rules for that class.
+Step 3: System automatically generates the student's initial Fee Invoice (Tuition + Admission Fee).
+Step 4: If assigned a Transport Route or Hostel Room, corresponding monthly fee structures are appended to the invoice automatically.
+2. Daily Attendance $\rightarrow$ Communication $\rightarrow$ Parent Portal
+Step 1: Teacher opens the /teacher/attendance view for their assigned section.
+Step 2: One-click batch selection marks student status (Present, Absent, Late, Excused).
+Step 3: Saving the ledger fires an event that queues instant notifications to the linked Parent Profile and logs the data into the student's aggregate attendance percentage ledger.
+3. Examinations $\rightarrow$ Grade Engine $\rightarrow$ Report Cards $\rightarrow$ Student/Parent Portals
+Step 1: Admin sets up an Exam Term with subject-wise max and pass marks.
+Step 2: Subject Teachers enter marks in the /teacher/marks matrix grid.
+Step 3: Grade engine evaluates score ranges against Grade Rules (e.g., $\ge 90\% = \text{A+}$, $\ge 80\% = \text{A}$) and calculates cumulative GPA.
+Step 4: Admin publishes results, unlocking printable PDF Report Cards on both Student and Parent Dashboards.
+4. Teacher HR $\rightarrow$ Timetable Allocation $\rightarrow$ LMS Classroom Access
+Step 1: Teacher profile is linked to specific Subjects and Sections via teacher_subject.
+Step 2: Timetable engine assigns the teacher to specific time slots in the weekly schedule grid.
+Step 3: LMS grants the teacher authorization to post study materials, assignments, and announcements exclusively for those assigned sections.
+2. Complete MySQL Production Database Schema
+SQL
+-- =============================================================================
+-- SUBSYSTEM 1: IDENTITY, AUTHENTICATION & RBAC PROFILES
+-- =============================================================================
+CREATE TABLE users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    phone VARCHAR(50) NULL,
+    avatar VARCHAR(255) NULL,
+    status ENUM('active', 'inactive', 'suspended') DEFAULT 'active',
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+CREATE TABLE roles (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    guard_name VARCHAR(50) DEFAULT 'web'
+);
+CREATE TABLE model_has_roles (
+    role_id BIGINT NOT NULL,
+    model_type VARCHAR(255) NOT NULL,
+    model_id BIGINT NOT NULL,
+    PRIMARY KEY (role_id, model_type, model_id),
+    FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
+);
+CREATE TABLE parent_profiles (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL UNIQUE,
+    occupation VARCHAR(100) NULL,
+    identity_card_no VARCHAR(100) NULL,
+    address TEXT NULL,
+    created_at TIMESTAMP NULL, updated_at TIMESTAMP NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+CREATE TABLE teacher_profiles (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL UNIQUE,
+    employee_code VARCHAR(50) NOT NULL UNIQUE,
+    qualification VARCHAR(255) NULL,
+    joining_date DATE NOT NULL,
+    basic_salary DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    created_at TIMESTAMP NULL, updated_at TIMESTAMP NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+-- =============================================================================
+-- SUBSYSTEM 2: ACADEMIC HIERARCHY & ENROLLMENT
+-- =============================================================================
+CREATE TABLE academic_years (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL, -- e.g. "2026-2027"
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    is_current BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP NULL, updated_at TIMESTAMP NULL
+);
+CREATE TABLE classes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL, -- e.g. "Grade 10"
+    numeric_code INT NOT NULL,
+    created_at TIMESTAMP NULL, updated_at TIMESTAMP NULL
+);
+CREATE TABLE sections (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    class_id BIGINT NOT NULL,
+    name VARCHAR(50) NOT NULL, -- e.g. "Section A"
+    capacity INT DEFAULT 40,
+    created_at TIMESTAMP NULL, updated_at TIMESTAMP NULL,
+    FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE
+);
+CREATE TABLE subjects (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    class_id BIGINT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    code VARCHAR(20) NOT NULL,
+    pass_marks INT DEFAULT 40,
+    max_marks INT DEFAULT 100,
+    type ENUM('theory', 'practical', 'both') DEFAULT 'theory',
+    created_at TIMESTAMP NULL, updated_at TIMESTAMP NULL,
+    FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE
+);
+CREATE TABLE student_profiles (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL UNIQUE,
+    parent_id BIGINT NULL,
+    class_id BIGINT NOT NULL,
+    section_id BIGINT NOT NULL,
+    roll_number VARCHAR(50) NOT NULL,
+    admission_number VARCHAR(50) NOT NULL UNIQUE,
+    admission_date DATE NOT NULL,
+    blood_group VARCHAR(10) NULL,
+    created_at TIMESTAMP NULL, updated_at TIMESTAMP NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (parent_id) REFERENCES parent_profiles(id) ON DELETE SET NULL,
+    FOREIGN KEY (class_id) REFERENCES classes(id),
+    FOREIGN KEY (section_id) REFERENCES sections(id)
+);
+CREATE TABLE teacher_subject (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    teacher_id BIGINT NOT NULL,
+    subject_id BIGINT NOT NULL,
+    section_id BIGINT NOT NULL,
+    FOREIGN KEY (teacher_id) REFERENCES teacher_profiles(id) ON DELETE CASCADE,
+    FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE,
+    FOREIGN KEY (section_id) REFERENCES sections(id) ON DELETE CASCADE
+);
+-- =============================================================================
+-- SUBSYSTEM 3: TIMETABLE & ATTENDANCE LEDGER
+-- =============================================================================
+CREATE TABLE time_slots (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    is_break BOOLEAN DEFAULT FALSE
+);
+CREATE TABLE timetables (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    section_id BIGINT NOT NULL,
+    subject_id BIGINT NOT NULL,
+    teacher_id BIGINT NOT NULL,
+    time_slot_id BIGINT NOT NULL,
+    day_of_week ENUM('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') NOT NULL,
+    FOREIGN KEY (section_id) REFERENCES sections(id) ON DELETE CASCADE,
+    FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE,
+    FOREIGN KEY (teacher_id) REFERENCES teacher_profiles(id) ON DELETE CASCADE,
+    FOREIGN KEY (time_slot_id) REFERENCES time_slots(id) ON DELETE CASCADE
+);
+CREATE TABLE attendances (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    student_id BIGINT NOT NULL,
+    section_id BIGINT NOT NULL,
+    academic_year_id BIGINT NOT NULL,
+    date DATE NOT NULL,
+    status ENUM('present', 'absent', 'late', 'excused') NOT NULL,
+    remarks VARCHAR(255) NULL,
+    marked_by BIGINT NOT NULL,
+    created_at TIMESTAMP NULL, updated_at TIMESTAMP NULL,
+    UNIQUE KEY unique_daily_student_attendance (student_id, date),
+    FOREIGN KEY (student_id) REFERENCES student_profiles(id) ON DELETE CASCADE,
+    FOREIGN KEY (section_id) REFERENCES sections(id),
+    FOREIGN KEY (academic_year_id) REFERENCES academic_years(id),
+    FOREIGN KEY (marked_by) REFERENCES users(id)
+);
+-- =============================================================================
+-- SUBSYSTEM 4: EXAMINATIONS, MARKS & GRADEBOOK
+-- =============================================================================
+CREATE TABLE exams (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    academic_year_id BIGINT NOT NULL,
+    name VARCHAR(100) NOT NULL, -- e.g. "Mid-Term Exam"
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    is_published BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP NULL, updated_at TIMESTAMP NULL,
+    FOREIGN KEY (academic_year_id) REFERENCES academic_years(id) ON DELETE CASCADE
+);
+CREATE TABLE exam_schedules (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    exam_id BIGINT NOT NULL,
+    subject_id BIGINT NOT NULL,
+    section_id BIGINT NOT NULL,
+    exam_date DATE NOT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    room_number VARCHAR(50) NULL,
+    FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE,
+    FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE,
+    FOREIGN KEY (section_id) REFERENCES sections(id) ON DELETE CASCADE
+);
+CREATE TABLE marks (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    exam_id BIGINT NOT NULL,
+    subject_id BIGINT NOT NULL,
+    student_id BIGINT NOT NULL,
+    marks_obtained DECIMAL(5,2) NOT NULL DEFAULT 0.00,
+    remarks VARCHAR(255) NULL,
+    entered_by BIGINT NOT NULL,
+    created_at TIMESTAMP NULL, updated_at TIMESTAMP NULL,
+    UNIQUE KEY unique_student_exam_mark (exam_id, subject_id, student_id),
+    FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE,
+    FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE,
+    FOREIGN KEY (student_id) REFERENCES student_profiles(id) ON DELETE CASCADE,
+    FOREIGN KEY (entered_by) REFERENCES users(id)
+);
+CREATE TABLE grade_rules (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    grade_name VARCHAR(10) NOT NULL, -- e.g. "A+", "A", "B"
+    min_percentage DECIMAL(5,2) NOT NULL,
+    max_percentage DECIMAL(5,2) NOT NULL,
+    grade_point DECIMAL(3,2) NOT NULL,
+    remarks VARCHAR(100) NULL
+);
+-- =============================================================================
+-- SUBSYSTEM 5: LMS, STUDY MATERIALS & ASSIGNMENTS
+-- =============================================================================
+CREATE TABLE study_materials (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    subject_id BIGINT NOT NULL,
+    section_id BIGINT NOT NULL,
+    teacher_id BIGINT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    file_path VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE,
+    FOREIGN KEY (section_id) REFERENCES sections(id) ON DELETE CASCADE,
+    FOREIGN KEY (teacher_id) REFERENCES teacher_profiles(id) ON DELETE CASCADE
+);
+CREATE TABLE assignments (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    subject_id BIGINT NOT NULL,
+    section_id BIGINT NOT NULL,
+    teacher_id BIGINT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    attachment_path VARCHAR(255) NULL,
+    due_date DATETIME NOT NULL,
+    max_marks INT NOT NULL DEFAULT 100,
+    created_at TIMESTAMP NULL, updated_at TIMESTAMP NULL,
+    FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE,
+    FOREIGN KEY (section_id) REFERENCES sections(id) ON DELETE CASCADE,
+    FOREIGN KEY (teacher_id) REFERENCES teacher_profiles(id) ON DELETE CASCADE
+);
+CREATE TABLE assignment_submissions (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    assignment_id BIGINT NOT NULL,
+    student_id BIGINT NOT NULL,
+    file_path VARCHAR(255) NOT NULL,
+    submitted_at DATETIME NOT NULL,
+    marks_obtained DECIMAL(5,2) NULL,
+    feedback TEXT NULL,
+    status ENUM('submitted', 'late', 'graded', 'resubmit') DEFAULT 'submitted',
+    created_at TIMESTAMP NULL, updated_at TIMESTAMP NULL,
+    FOREIGN KEY (assignment_id) REFERENCES assignments(id) ON DELETE CASCADE,
+    FOREIGN KEY (student_id) REFERENCES student_profiles(id) ON DELETE CASCADE
+);
+-- =============================================================================
+-- SUBSYSTEM 6: FINANCE, FEES & PAYROLL
+-- =============================================================================
+CREATE TABLE fee_groups (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL, -- e.g. "Tuition Fee", "Lab Charges"
+    description VARCHAR(255) NULL
+);
+CREATE TABLE fee_masters (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    class_id BIGINT NOT NULL,
+    fee_group_id BIGINT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    due_date DATE NOT NULL,
+    FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE,
+    FOREIGN KEY (fee_group_id) REFERENCES fee_groups(id) ON DELETE CASCADE
+);
+CREATE TABLE fee_invoices (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    student_id BIGINT NOT NULL,
+    invoice_number VARCHAR(100) NOT NULL UNIQUE,
+    title VARCHAR(255) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    paid_amount DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    due_date DATE NOT NULL,
+    status ENUM('unpaid', 'partially_paid', 'paid') DEFAULT 'unpaid',
+    created_at TIMESTAMP NULL, updated_at TIMESTAMP NULL,
+    FOREIGN KEY (student_id) REFERENCES student_profiles(id) ON DELETE CASCADE
+);
+CREATE TABLE fee_payments (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    fee_invoice_id BIGINT NOT NULL,
+    transaction_id VARCHAR(100) NOT NULL UNIQUE,
+    amount_paid DECIMAL(10,2) NOT NULL,
+    payment_method ENUM('cash', 'card', 'bank_transfer', 'online') NOT NULL,
+    paid_at DATETIME NOT NULL,
+    received_by BIGINT NOT NULL,
+    FOREIGN KEY (fee_invoice_id) REFERENCES fee_invoices(id) ON DELETE CASCADE,
+    FOREIGN KEY (received_by) REFERENCES users(id)
+);
+CREATE TABLE payrolls (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    teacher_id BIGINT NOT NULL,
+    month_year VARCHAR(20) NOT NULL, -- e.g. "August 2026"
+    basic_salary DECIMAL(10,2) NOT NULL,
+    allowances DECIMAL(10,2) DEFAULT 0.00,
+    deductions DECIMAL(10,2) DEFAULT 0.00,
+    net_salary DECIMAL(10,2) NOT NULL,
+    status ENUM('generated', 'paid') DEFAULT 'generated',
+    paid_at DATE NULL,
+    created_at TIMESTAMP NULL, updated_at TIMESTAMP NULL,
+    FOREIGN KEY (teacher_id) REFERENCES teacher_profiles(id) ON DELETE CASCADE
+);
+-- =============================================================================
+-- SUBSYSTEM 7: AUXILIARIES (LIBRARY, TRANSPORT, HOSTEL, INVENTORY, NOTICES)
+-- =============================================================================
+CREATE TABLE books (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    isbn VARCHAR(50) NOT NULL UNIQUE,
+    author VARCHAR(255) NOT NULL,
+    quantity INT NOT NULL DEFAULT 1,
+    rack_number VARCHAR(50) NULL
+);
+CREATE TABLE book_issues (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    book_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    issue_date DATE NOT NULL,
+    due_date DATE NOT NULL,
+    return_date DATE NULL,
+    fine_amount DECIMAL(8,2) DEFAULT 0.00,
+    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+CREATE TABLE transport_routes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    fare DECIMAL(8,2) NOT NULL
+);
+CREATE TABLE vehicles (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    vehicle_number VARCHAR(50) NOT NULL UNIQUE,
+    driver_name VARCHAR(100) NOT NULL,
+    driver_phone VARCHAR(50) NOT NULL
+);
+CREATE TABLE student_transport (
+    student_id BIGINT PRIMARY KEY,
+    route_id BIGINT NOT NULL,
+    vehicle_id BIGINT NOT NULL,
+    FOREIGN KEY (student_id) REFERENCES student_profiles(id) ON DELETE CASCADE,
+    FOREIGN KEY (route_id) REFERENCES transport_routes(id),
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(id)
+);
+CREATE TABLE hostels (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    type ENUM('boys', 'girls', 'mixed') NOT NULL
+);
+CREATE TABLE hostel_rooms (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    hostel_id BIGINT NOT NULL,
+    room_number VARCHAR(50) NOT NULL,
+    cost_per_bed DECIMAL(8,2) NOT NULL,
+    FOREIGN KEY (hostel_id) REFERENCES hostels(id) ON DELETE CASCADE
+);
+CREATE TABLE student_hostel (
+    student_id BIGINT PRIMARY KEY,
+    room_id BIGINT NOT NULL,
+    FOREIGN KEY (student_id) REFERENCES student_profiles(id) ON DELETE CASCADE,
+    FOREIGN KEY (room_id) REFERENCES hostel_rooms(id)
+);
+CREATE TABLE inventory_categories (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+CREATE TABLE inventory_items (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    category_id BIGINT NOT NULL,
+    item_name VARCHAR(255) NOT NULL,
+    quantity INT NOT NULL DEFAULT 0,
+    FOREIGN KEY (category_id) REFERENCES inventory_categories(id) ON DELETE CASCADE
+);
+CREATE TABLE notices (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    target_role ENUM('all', 'teacher', 'student', 'parent') DEFAULT 'all',
+    created_by BIGINT NOT NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (created_by) REFERENCES users(id)
+);
+3. Detailed UI Architectural Blueprint
+Design Paradigm: Glassmorphism Over Clean Flat Grid (Dashboard-First)
+The UI uses a Clean Flat 12-Column Grid Engine for mathematical structural alignment, combined with Glassmorphic Floating Overlays for high-priority interactive elements.
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STICKY NAVBAR: Glassmorphism Overlay (Logo, Search, Alerts, Profile Drawer) │
+├──────────────┬──────────────────────────────────────────────────────────────┤
+│ SIDEBAR      │ MAIN WORKSPACE CANVAS (Flat 12-Column Grid Layout)          │
+│ Frosted      │                                                              │
+│ Glass Panel  │ ┌────────────────────────┐ ┌───────────────────────────┐  │
+│              │ │ GLASS CARD (3 Cols)    │ │ GLASS CARD (3 Cols)       │  │
+│ • Dashboard  │ │ Active Students: 1,240  │ │ Revenue: $42,500          │  │
+│ • Academics  │ └────────────────────────┘ └───────────────────────────┘  │
+│ • Users      │ ┌──────────────────────────────────────────────────────────┐ │
+│ • Classroom  │ │ CLEAN FLAT DATA CONTAINER (12 Cols)                      │ │
+│ • Attendance │ │ [Class Filter ▼] [Search...]           [+ Add Admission] │ │
+│ • Exams      │ │ ──────────────────────────────────────────────────────── │ │
+│ • Finance    │ │ Student Name | Admission # | Class | Status | Actions   │ │
+│ • Auxiliaries│ │ Jane Doe     | ADM-2026-01 | 10-A  | Active | [Edit] [X]│ │
+│ • Settings   │ └──────────────────────────────────────────────────────────┘ │
+└──────────────┴──────────────────────────────────────────────────────────────┘
+Complete Tailwind CSS Configuration & Utilities
+CSS
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer utilities {
+  /* 12-Column Flat Grid System */
+  .flat-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  /* Glassmorphic Panel (Light Theme) */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.70);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+    border-radius: 1rem;
+  }
+  /* Glassmorphic Panel (Dark Theme) */
+  .dark .glass-card {
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    border-radius: 1rem;
+  }
+  /* Flat Data Table Container */
+  .flat-table-wrapper {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+  
+  .dark .flat-table-wrapper {
+    background-color: #0F172A;
+    border: 1px solid #1E293B;
+  }
+}
+4. Complete Route & Controller Taxonomy (routes/web.php)
+PHP
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\TeacherController;
+use App\Http\Controllers\Admin\ClassController;
+use App\Http\Controllers\Admin\FeeController;
+use App\Http\Controllers\Teacher\DashboardController as TeacherDashboardController;
+use App\Http\Controllers\Teacher\AttendanceController;
+use App\Http\Controllers\Teacher\GradebookController;
+use App\Http\Controllers\Teacher\LmsController;
+use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
+use App\Http\Controllers\Student\AssignmentController as StudentAssignmentController;
+use App\Http\Controllers\Parent\DashboardController as ParentDashboardController;
+// Authentication Routes
+Auth::routes(['register' => false]);
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+// -----------------------------------------------------------------------------
+// 1. SUPER ADMIN / SCHOOL LEADERSHIP PORTAL
+// -----------------------------------------------------------------------------
+Route::middleware(['auth', 'role:super-admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    
+    // Academic Setup
+    Route::resource('classes', ClassController::class);
+    
+    // User Registries
+    Route::resource('students', StudentController::class);
+    Route::resource('teachers', TeacherController::class);
+    
+    // Finance Engine
+    Route::get('/fees/invoices', [FeeController::class, 'invoices'])->name('fees.invoices');
+    Route::post('/fees/generate-batch', [FeeController::class, 'generateBatch'])->name('fees.generate-batch');
+    Route::post('/fees/pay', [FeeController::class, 'recordPayment'])->name('fees.pay');
+});
+// -----------------------------------------------------------------------------
+// 2. TEACHER WORKSPACE
+// -----------------------------------------------------------------------------
+Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')->group(function () {
+    Route::get('/dashboard', [TeacherDashboardController::class, 'index'])->name('dashboard');
+    
+    // Daily Operations
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+    
+    // Assessment Matrix
+    Route::get('/grades', [GradebookController::class, 'index'])->name('grades.index');
+    Route::post('/grades', [GradebookController::class, 'store'])->name('grades.store');
+    
+    // LMS & Materials
+    Route::resource('assignments', LmsController::class);
+});
+// -----------------------------------------------------------------------------
+// 3. STUDENT PORTAL
+// -----------------------------------------------------------------------------
+Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')->group(function () {
+    Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/assignments', [StudentAssignmentController::class, 'index'])->name('assignments.index');
+    Route::post('/assignments/{assignment}/submit', [StudentAssignmentController::class, 'submit'])->name('assignments.submit');
+});
+// -----------------------------------------------------------------------------
+// 4. PARENT PORTAL
+// -----------------------------------------------------------------------------
+Route::middleware(['auth', 'role:parent'])->prefix('parent')->name('parent.')->group(function () {
+    Route::get('/dashboard', [ParentDashboardController::class, 'index'])->name('dashboard');
+});
+5. Master AI Execution Instructions File (LMS_SYSTEM_INSTRUCTIONS.md)
+Markdown
+# SYSTEM PROMPT: School LMS & ERP Code Generator Instructions
+## 1. Primary Instruction
+You are an expert full-stack developer assigned to build a school LMS and ERP system using PHP Laravel, Blade, Tailwind CSS, Alpine.js, and MySQL.
+Whenever asked to write code for any module, you MUST output **complete, fully functional production code**.
+### MANDATORY CODE RULES:
+1. **Zero Comment Placeholders:** Never output `// add logic here`, `// add inputs here`, or `...`. Always write full code.
+2. **Complete Views:** Every Blade view must include complete forms with `@csrf`, `@method`, full input validation error messaging (`@error`), Alpine.js state triggers, and Tailwind classes.
+3. **Complete Controllers:** Controllers must use explicit `FormRequest` validation, database transactions (`DB::transaction`) for multi-table writes, try-catch blocks, and response redirects with flash messages (`with('success', ...)`).
+4. **Complete Models:** Every Eloquent model must have explicit `$fillable` arrays and complete relational methods (`belongsTo`, `hasMany`, `belongsToMany`).
+---
+## 2. UI/UX Standard
+* **Visual Theme:** Glassmorphism floating over a Clean Flat Grid (Dashboard-First).
+* **Glass Utility:** Use `glass-card` (`bg-white/70 dark:bg-slate-900/75 backdrop-blur-md border border-white/40 dark:border-slate-800/60 shadow-xl rounded-2xl`).
+* **Grid Layout:** Base grid containers MUST use `flat-grid` (`grid grid-cols-12 gap-6`).
+---
+<ElicitationsGroup message="Where should we begin coding this platform? Select a phase:">
+  <Elicitation label="Generate All Migration Files & Eloquent Models" query="Write all complete database migration files and Eloquent models with full relationships based on the provided MySQL schema."/>
+  <Elicitation label="Generate Master Blade Layout & Tailwind Config" query="Generate the app.blade.php master layout file, dark mode toggle, and Tailwind CSS config with Glassmorphic utilities."/>
+  <Elicitation label="Generate Admin Student Management Module" query="Build the complete StudentController, FormRequest validation, named routes, and Glassmorphic Blade data table with admission modal."/>
+</ElicitationsGroup>
