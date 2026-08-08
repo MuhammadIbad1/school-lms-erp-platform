@@ -11,35 +11,51 @@
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             color-adjust: exact !important;
+            box-sizing: border-box;
         }
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #080c14 !important;
             color: #f8fafc !important;
+            margin: 0;
+            padding: 0;
         }
         .font-display {
             font-family: 'Space Grotesk', sans-serif;
         }
+        .a4-page {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto 3rem auto;
+            background: #0b0f19;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-sizing: border-box;
+        }
         .showcase-card {
-            background: rgba(15, 23, 42, 0.85) !important;
+            background: rgba(15, 23, 42, 0.9) !important;
             border: 1px solid rgba(255, 255, 255, 0.12) !important;
             backdrop-filter: blur(16px);
-            border-radius: 1.5rem;
+            border-radius: 1.25rem;
         }
         .screenshot-frame {
             border: 1px solid rgba(255, 255, 255, 0.18) !important;
-            border-radius: 1rem;
+            border-radius: 0.875rem;
             overflow: hidden;
             background: #0f172a !important;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-            transition: transform 0.3s ease;
+            box-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.8);
         }
-        .screenshot-frame:hover {
-            transform: scale(1.01);
+        .screenshot-frame img {
+            width: 100%;
+            height: auto;
+            max-height: 380px;
+            object-fit: contain;
+            display: block;
         }
         @page {
-            size: A4;
-            margin: 8mm;
+            size: A4 portrait;
+            margin: 10mm;
         }
         @media print {
             .no-print { display: none !important; }
@@ -48,42 +64,55 @@
                 color: #f8fafc !important; 
                 padding: 0 !important; 
             }
+            .a4-page { 
+                width: 100% !important; 
+                max-width: 100% !important; 
+                margin: 0 0 0 0 !important; 
+                padding: 1.5rem !important; 
+                border: none !important; 
+                border-radius: 0 !important; 
+                background: #080c14 !important;
+                page-break-after: always !important; 
+                break-after: page !important;
+                height: 98vh !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+            }
+            .a4-page:last-child {
+                page-break-after: auto !important;
+                break-after: auto !important;
+            }
             .showcase-card { 
                 background: #0f172a !important; 
                 border: 1px solid rgba(255, 255, 255, 0.15) !important; 
                 color: #f8fafc !important; 
                 break-inside: avoid !important;
                 page-break-inside: avoid !important;
-                margin-bottom: 2rem !important;
             }
             .screenshot-frame { 
-                box-shadow: none !important; 
                 border: 1px solid rgba(255, 255, 255, 0.2) !important; 
                 background: #080c14 !important;
                 break-inside: avoid !important;
                 page-break-inside: avoid !important;
             }
-            .page-break { 
-                page-break-before: always !important; 
-                break-before: page !important;
-            }
-            h1, h2, h3, h4, h5, p, span, strong, td, th, li { 
-                color: inherit; 
+            .screenshot-frame img {
+                max-height: 350px !important;
             }
         }
     </style>
 </head>
-<body class="p-4 md:p-12">
+<body class="p-4 md:p-10">
 
     <!-- Sticky Top Action Bar with 1-Click Direct PDF Download -->
-    <div class="no-print sticky top-6 z-50 max-w-5xl mx-auto mb-10 flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-slate-900/95 border border-slate-700 shadow-2xl backdrop-blur-md">
+    <div class="no-print sticky top-6 z-50 max-w-4xl mx-auto mb-8 flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-slate-900/95 border border-slate-700 shadow-2xl backdrop-blur-md">
         <div class="flex items-center space-x-3">
             <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center font-bold text-white shadow-lg">
                 🎓
             </div>
             <div>
-                <h3 class="text-sm font-bold text-white">EduNova ERP & LMS — Master Technical Report</h3>
-                <p class="text-[11px] text-slate-400">Dark Glassmorphic UI Preserved in Full High-Resolution PDF</p>
+                <h3 class="text-sm font-bold text-white">EduNova ERP & LMS — A4 Formatted Portfolio Document</h3>
+                <p class="text-[11px] text-slate-400">Strict A4 Page Alignment • Dark Glassmorphic Theme • 16 Screenshots</p>
             </div>
         </div>
         <div class="flex items-center space-x-3">
@@ -93,513 +122,450 @@
             </a>
             <button onclick="window.print()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-lg shadow-indigo-600/40 transition flex items-center">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-                🖨️ Print Document
+                🖨️ Print to A4 PDF
             </button>
             <a href="/login" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs transition">
-                Open Live App &rarr;
+                Open App &rarr;
             </a>
         </div>
     </div>
 
-    <!-- Main Presentation Container -->
-    <div class="max-w-5xl mx-auto space-y-14">
-        
-        <!-- COVER / TITLE SECTION -->
-        <div class="showcase-card p-10 md:p-14 text-center relative overflow-hidden">
+    <!-- ================= PAGE 1: COVER & EXECUTIVE OVERVIEW ================= -->
+    <div class="a4-page text-center relative overflow-hidden flex flex-col justify-between">
+        <div>
             <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-bold text-xs uppercase tracking-widest mb-6">
-                Master Technical Portfolio & Specification
+                Master Technical Portfolio & System Specification
             </div>
             
-            <h1 class="text-4xl md:text-6xl font-extrabold text-white font-display tracking-tight leading-tight">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white font-display tracking-tight leading-tight">
                 EduNova <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">ERP & LMS</span> Platform
             </h1>
             
-            <p class="mt-4 text-base md:text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed">
+            <p class="mt-4 text-sm md:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
                 An enterprise-grade, multi-role **School ERP and Learning Management Ecosystem** engineered with **Laravel 12, MySQL 8.0, Tailwind CSS, and Alpine.js**. Spans 7 core subsystems + RBAC + 4 dedicated portals with real-time notification alerts, official printable vouchers, and dual payment checkout.
             </p>
 
             <!-- Tech Badges -->
-            <div class="mt-8 flex flex-wrap justify-center gap-3 text-xs font-bold">
-                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-indigo-300">🚀 Laravel 12.x</span>
-                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-emerald-300">🐬 MySQL 8.0 Engine</span>
-                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-cyan-300">🎨 Glassmorphism & Tailwind CSS</span>
-                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-purple-300">⚡ Alpine.js Reactive Engine</span>
-                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-amber-300">🛡️ Enterprise RBAC Security</span>
-                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-rose-300">📊 Chart.js Analytics</span>
+            <div class="mt-6 flex flex-wrap justify-center gap-2.5 text-xs font-bold">
+                <span class="px-3 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-indigo-300">🚀 Laravel 12.x</span>
+                <span class="px-3 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-emerald-300">🐬 MySQL 8.0 Engine</span>
+                <span class="px-3 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-cyan-300">🎨 Glassmorphism UI</span>
+                <span class="px-3 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-purple-300">⚡ Alpine.js Reactive</span>
+                <span class="px-3 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-amber-300">🛡️ RBAC Security</span>
+                <span class="px-3 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-rose-300">📊 Chart.js Analytics</span>
             </div>
 
             <!-- Summary Metrics Table -->
-            <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left">
-                <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-                    <p class="text-[10px] uppercase font-bold text-slate-400">Integrated Portals</p>
-                    <p class="text-xl font-extrabold text-white mt-0.5">4 Workspaces</p>
-                    <p class="text-[11px] text-indigo-400">Admin, Teacher, Student, Parent</p>
+            <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
+                <div class="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800">
+                    <p class="text-[9px] uppercase font-bold text-slate-400">Integrated Portals</p>
+                    <p class="text-lg font-extrabold text-white mt-0.5">4 Workspaces</p>
+                    <p class="text-[10px] text-indigo-400">Admin, Teacher, Student, Parent</p>
                 </div>
-                <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-                    <p class="text-[10px] uppercase font-bold text-slate-400">Database Models</p>
-                    <p class="text-xl font-extrabold text-white mt-0.5">37 Models</p>
-                    <p class="text-[11px] text-emerald-400">Relational Eloquent Schema</p>
+                <div class="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800">
+                    <p class="text-[9px] uppercase font-bold text-slate-400">Database Models</p>
+                    <p class="text-lg font-extrabold text-white mt-0.5">37 Models</p>
+                    <p class="text-[10px] text-emerald-400">Relational Eloquent Schema</p>
                 </div>
-                <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-                    <p class="text-[10px] uppercase font-bold text-slate-400">Route Endpoints</p>
-                    <p class="text-xl font-extrabold text-white mt-0.5">75 Routes</p>
-                    <p class="text-[11px] text-purple-400">Guarded by 5 Middlewares</p>
+                <div class="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800">
+                    <p class="text-[9px] uppercase font-bold text-slate-400">Route Endpoints</p>
+                    <p class="text-lg font-extrabold text-white mt-0.5">75 Routes</p>
+                    <p class="text-[10px] text-purple-400">Guarded by 5 Middlewares</p>
                 </div>
-                <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-                    <p class="text-[10px] uppercase font-bold text-slate-400">Auxiliary Modules</p>
-                    <p class="text-xl font-extrabold text-white mt-0.5">7 Modules</p>
-                    <p class="text-[11px] text-amber-400">Library, Bus, Hostel, Payroll...</p>
+                <div class="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800">
+                    <p class="text-[9px] uppercase font-bold text-slate-400">Auxiliary Modules</p>
+                    <p class="text-lg font-extrabold text-white mt-0.5">7 Modules</p>
+                    <p class="text-[10px] text-amber-400">Library, Bus, Hostel, Payroll...</p>
                 </div>
             </div>
         </div>
 
-        <!-- COMPLETE SYSTEM FUNCTIONALITY INVENTORY (TABLE) -->
-        <div class="showcase-card p-8 md:p-10 space-y-6">
-            <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Complete Master Functionality Matrix</span>
-                <h2 class="text-2xl font-bold font-display text-white mt-1">Detailed Breakdown of All System Capabilities</h2>
-                <p class="text-xs text-slate-400 mt-1">Every feature, workflow, algorithm, and module implemented across the entire platform.</p>
+        <div class="pt-6 border-t border-slate-800 text-xs text-slate-500 flex justify-between items-center">
+            <span>EduNova ERP & LMS Platform</span>
+            <span class="font-bold text-slate-400">Page 1 of 10 • Executive Summary</span>
+            <span>Developed by Muhammad Ibad</span>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 2: COMPLETE FUNCTIONAL MATRIX ================= -->
+    <div class="a4-page flex flex-col justify-between">
+        <div>
+            <div class="mb-4">
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">System Capability Catalog</span>
+                <h2 class="text-xl font-bold font-display text-white mt-0.5">Complete Master Functionality Matrix (10 Modules)</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+            <div class="grid grid-cols-2 gap-3 text-[11px]">
                 
-                <!-- Module 1 & 2 -->
-                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
-                    <h3 class="text-sm font-bold text-indigo-400">1. Authentication & Enterprise RBAC</h3>
-                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
-                        <li><strong>Multi-Role Login Gateway:</strong> Session auth with password hashing.</li>
-                        <li><strong>1-Click Demo Switcher:</strong> Instant switching between Admin, Teacher, Student, Parent.</li>
-                        <li><strong>Dynamic Role Creation:</strong> Create custom security roles with custom capability sets.</li>
-                        <li><strong>Visual Capability Matrix:</strong> 1-click grant/revoke toggles for granular permissions.</li>
-                        <li><strong>User Role Assignment:</strong> Instant role reassignment from user directory.</li>
-                        <li><strong>5 Custom Security Middlewares:</strong> `active`, `role`, `permission`, `parent.child`, `student.self`.</li>
-                    </ul>
+                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+                    <h3 class="font-bold text-indigo-400">1. Authentication & RBAC</h3>
+                    <p class="text-slate-300">• 1-Click Multi-Role Demo Switcher</p>
+                    <p class="text-slate-300">• Dynamic Custom Role Creation</p>
+                    <p class="text-slate-300">• 1-Click Grant/Revoke Permission Matrix</p>
+                    <p class="text-slate-300">• 5 Custom Security Middlewares</p>
                 </div>
 
-                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
-                    <h3 class="text-sm font-bold text-emerald-400">2. Academic Hierarchy & Placements</h3>
-                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
-                        <li><strong>Academic Sessions:</strong> Manage school terms and active year scoping.</li>
-                        <li><strong>Classes & Sections:</strong> Dynamic class definitions with section splits.</li>
-                        <li><strong>Curriculum Subjects:</strong> Course codes, credit hours, and passing score criteria.</li>
-                        <li><strong>Time Slots Engine:</strong> Period durations, break intervals, and recess marking.</li>
-                        <li><strong>Teacher Allocation Matrix:</strong> Assign faculty to specific subjects and sections.</li>
-                    </ul>
+                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+                    <h3 class="font-bold text-emerald-400">2. Academic Hierarchy</h3>
+                    <p class="text-slate-300">• Sessions, Classes & Sections</p>
+                    <p class="text-slate-300">• Curriculum Course Codes & Credits</p>
+                    <p class="text-slate-300">• Time Slot Engine & Break Intervals</p>
+                    <p class="text-slate-300">• Faculty Subject-Section Allocations</p>
                 </div>
 
-                <!-- Module 3 & 4 -->
-                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
-                    <h3 class="text-sm font-bold text-purple-400">3. Student Admission & 360° Profiles</h3>
-                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
-                        <li><strong>Multi-Step Admission Wizard:</strong> Demographics, parent linking, and login account.</li>
-                        <li><strong>Auxiliary Allocations:</strong> Assign transport fleet routes & hostel dorm rooms.</li>
-                        <li><strong>Automatic Invoicing:</strong> Auto-generates initial term fee invoice on enrollment.</li>
-                        <li><strong>Student Directory:</strong> Class filters, search bars, active/suspend account toggles.</li>
-                        <li><strong>360° Student Profile:</strong> Live attendance rate, exam marks, fee ledger, and hostel info.</li>
-                    </ul>
+                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+                    <h3 class="font-bold text-purple-400">3. Admission & 360° Profiles</h3>
+                    <p class="text-slate-300">• Multi-Step Student Admission Wizard</p>
+                    <p class="text-slate-300">• Transport & Dorm Room Allocations</p>
+                    <p class="text-slate-300">• Automatic Enrollment Invoicing</p>
+                    <p class="text-slate-300">• 360° Student Academic Demographics</p>
                 </div>
 
-                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
-                    <h3 class="text-sm font-bold text-blue-400">4. Timetable & Daily Attendance</h3>
-                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
-                        <li><strong>Live Schedule Grid:</strong> Full weekly timetable with room allocations.</li>
-                        <li><strong>1-Click Batch Attendance:</strong> Teachers mark `Present`, `Late`, `Absent`, `Excused`.</li>
-                        <li><strong>Instant Mark All Present:</strong> Fast 1-click batch button for quick morning roll call.</li>
-                        <li><strong>Custom Attendance Remarks:</strong> Log absence reasons or late arrival notes.</li>
-                        <li><strong>Aggregate Presence Statistics:</strong> Live percentage calculation for students & parents.</li>
-                    </ul>
+                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+                    <h3 class="font-bold text-blue-400">4. Timetable & Daily Attendance</h3>
+                    <p class="text-slate-300">• Live Weekly Timetable Grid</p>
+                    <p class="text-slate-300">• 1-Click Batch Attendance Ledger</p>
+                    <p class="text-slate-300">• Status: Present, Late, Absent, Excused</p>
+                    <p class="text-slate-300">• Live Aggregate Presence % Metrics</p>
                 </div>
 
-                <!-- Module 5 & 6 -->
-                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
-                    <h3 class="text-sm font-bold text-amber-400">5. Examinations & Gradebook</h3>
-                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
-                        <li><strong>Exam Terms:</strong> Midterms, Finals, and Quizzes with start/end schedules.</li>
-                        <li><strong>Score Entry Matrix:</strong> Fast score input with max score constraints.</li>
-                        <li><strong>Grade Rule Calculation:</strong> Real-time evaluation into `A+`, `A`, `B`, `C`, `D`, `F` and GPA.</li>
-                        <li><strong>Teacher Feedback:</strong> Constructive evaluation notes per subject.</li>
-                        <li><strong>Official Report Card:</strong> Printable PDF-ready term report card with dean seal.</li>
-                    </ul>
+                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+                    <h3 class="font-bold text-amber-400">5. Exams & Gradebook Engine</h3>
+                    <p class="text-slate-300">• Term Setup & Exam Allocations</p>
+                    <p class="text-slate-300">• Fast Assessment Score Entry Matrix</p>
+                    <p class="text-slate-300">• Grade Rules: A+, A, B, C, D, F & GPA</p>
+                    <p class="text-slate-300">• Printable Official Term Report Card</p>
                 </div>
 
-                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
-                    <h3 class="text-sm font-bold text-pink-400">6. LMS Studio & Student Homework</h3>
-                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
-                        <li><strong>Study Materials Center:</strong> Upload lecture handouts, PDFs, and reading notes.</li>
-                        <li><strong>Homework Builder:</strong> Set title, instructions, specs attachment, and due date.</li>
-                        <li><strong>Student Solution Submissions:</strong> Upload homework files (PDF, ZIP, DOCX).</li>
-                        <li><strong>Grading Desk:</strong> Download submitted files, enter scores, and give feedback.</li>
-                        <li><strong>Overdue Tracking:</strong> Visual deadline indicators for pending student work.</li>
-                    </ul>
+                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+                    <h3 class="font-bold text-pink-400">6. LMS Studio & Homework</h3>
+                    <p class="text-slate-300">• Study Handouts & Notes Uploader</p>
+                    <p class="text-slate-300">• Assignment Builder with Deadlines</p>
+                    <p class="text-slate-300">• Student Solution Upload Desk</p>
+                    <p class="text-slate-300">• Teacher Grading Desk with Feedback</p>
                 </div>
 
-                <!-- Module 7 & 8 -->
-                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
-                    <h3 class="text-sm font-bold text-emerald-400">7. Finance, Fees & Dual Payment</h3>
-                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
-                        <li><strong>Fee Category Masters:</strong> Tuition, Science Lab, Transport, Sports.</li>
-                        <li><strong>1-Click Batch Invoicing:</strong> Invoices entire classes simultaneously.</li>
-                        <li><strong>💳 Online Card Payment:</strong> Automated instant settlement with card checkout.</li>
-                        <li><strong>💵 Cash at School Desk:</strong> Request cash verification at school counter.</li>
-                        <li><strong>HR Cash Approval Queue:</strong> Verify physical cash and approve with 1-click.</li>
-                        <li><strong>Official Fee Receipts:</strong> Printable vouchers with transaction audit trails.</li>
-                    </ul>
+                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+                    <h3 class="font-bold text-emerald-400">7. Finance & Dual Payments</h3>
+                    <p class="text-slate-300">• Class Fee Masters & Due Dates</p>
+                    <p class="text-slate-300">• 1-Click Batch Invoicing Engine</p>
+                    <p class="text-slate-300">• 💳 Instant Online Card Payment</p>
+                    <p class="text-slate-300">• 💵 Cash at Desk with HR Approval</p>
                 </div>
 
-                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
-                    <h3 class="text-sm font-bold text-cyan-400">8. Faculty Payroll & Payslips</h3>
-                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
-                        <li><strong>Salary Slip Generator:</strong> Monthly payroll calculation for teachers.</li>
-                        <li><strong>Allowances & Deductions:</strong> Academic allowances and statutory taxes.</li>
-                        <li><strong>Net Disbursed Pay:</strong> Automated take-home compensation calculation.</li>
-                        <li><strong>🖨️ Printable Payslip Voucher:</strong> A4 formatted with institutional seals.</li>
-                        <li><strong>💾 Direct File Download:</strong> 1-click export of official salary vouchers.</li>
-                    </ul>
+                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+                    <h3 class="font-bold text-cyan-400">8. Faculty Payroll & Payslips</h3>
+                    <p class="text-slate-300">• Monthly Salary Slip Generator</p>
+                    <p class="text-slate-300">• Allowances & Statutory Deductions</p>
+                    <p class="text-slate-300">• 🖨️ High-Res Printable Payslip Voucher</p>
+                    <p class="text-slate-300">• 💾 1-Click Downloadable File</p>
                 </div>
 
-                <!-- Module 9 & 10 -->
-                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
-                    <h3 class="text-sm font-bold text-yellow-400">9. 7 Auxiliaries Suite</h3>
-                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
-                        <li><strong>📚 Library Catalog:</strong> ISBN lookup, quantity stock, and borrowing ledger.</li>
-                        <li><strong>🚌 Transport Fleet:</strong> Transit routes, fares, vehicle plates, driver contacts.</li>
-                        <li><strong>🏢 Hostel Residences:</strong> Dormitory buildings, room capacities, monthly rates.</li>
-                        <li><strong>📦 Inventory Assets:</strong> Equipment categories, stock quantities, and asset value.</li>
-                        <li><strong>📢 Notice Bulletins:</strong> Role-targeted broadcasts (`all`, `teacher`, `student`, `parent`).</li>
-                    </ul>
+                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+                    <h3 class="font-bold text-yellow-400">9. Auxiliaries Suite (5 Subsystems)</h3>
+                    <p class="text-slate-300">• 📚 Library Catalog & Book Loans</p>
+                    <p class="text-slate-300">• 🚌 Transport Fleet & Route Rosters</p>
+                    <p class="text-slate-300">• 🏢 Hostel Dormitories & Bed Allocations</p>
+                    <p class="text-slate-300">• 📦 Asset Inventory & Notices</p>
                 </div>
 
-                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
-                    <h3 class="text-sm font-bold text-indigo-400">10. Real-Time Interactive Alerts</h3>
-                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
-                        <li><strong>Floating Toast Popup:</strong> Animated slide-in banner on new announcements.</li>
-                        <li><strong>Web Audio Chime:</strong> Synthesized pleasant audio cue on alert trigger.</li>
-                        <li><strong>Global Bell Drawer:</strong> Live unread badge count in sticky glass navbar.</li>
-                        <li><strong>LocalStorage Persistence:</strong> Dismissed notices remembered to prevent spam.</li>
-                        <li><strong>Flash Messages:</strong> Instant feedback on actions (success, error, info).</li>
-                    </ul>
+                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+                    <h3 class="font-bold text-indigo-400">10. Real-Time Interactive Alerts</h3>
+                    <p class="text-slate-300">• Floating Toast Popup with Audio Chime</p>
+                    <p class="text-slate-300">• Top Glass Navbar Notification Bell</p>
+                    <p class="text-slate-300">• Targeted Announcements: Role Scoped</p>
+                    <p class="text-slate-300">• LocalStorage Dismissal Tracking</p>
                 </div>
 
             </div>
         </div>
 
-        <div class="page-break"></div>
-
-        <!-- 1. AUTHENTICATION & LOGIN GATEWAY (SCREENSHOT) -->
-        <div class="showcase-card p-8 md:p-10 space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Security Gateway</span>
-                    <h2 class="text-2xl font-bold font-display text-white mt-1">1. Glassmorphism Login & 1-Click Multi-Role Switcher</h2>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                    Auth Subsystem
-                </span>
-            </div>
-            <p class="text-sm text-slate-300 leading-relaxed">
-                Modern authentication card with ambient glow, automatic dark/light theme detection, and an interactive **1-Click Quick Demo Login Switcher** allowing instant switching between Super Admin, Faculty Teachers, Students, and Parents without typing credentials.
-            </p>
-            <div class="screenshot-frame bg-slate-900 p-2">
-                <img src="/portfolio_assets/login_page_1786179926255.png" alt="Login Screen" class="w-full rounded-lg">
-            </div>
+        <div class="pt-4 border-t border-slate-800 text-xs text-slate-500 flex justify-between items-center">
+            <span>EduNova ERP & LMS Platform</span>
+            <span class="font-bold text-slate-400">Page 2 of 10 • Functional Architecture Matrix</span>
+            <span>Developed by Muhammad Ibad</span>
         </div>
+    </div>
 
-        <!-- 2. SUPER ADMIN EXECUTIVE COMMAND (SCREENSHOT) -->
-        <div class="showcase-card p-8 md:p-10 space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-purple-400">Executive Overview</span>
-                    <h2 class="text-2xl font-bold font-display text-white mt-1">2. Super Admin Executive Command Dashboard</h2>
+    <!-- ================= PAGE 3: AUTHENTICATION & SUPER ADMIN COMMAND ================= -->
+    <div class="a4-page flex flex-col justify-between">
+        <div>
+            <div class="mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Gateway & Command Subsystems</span>
+                <h2 class="text-xl font-bold font-display text-white mt-0.5">1. Auth Login Gate & 2. Super Admin Dashboard</h2>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <p class="text-xs font-bold text-indigo-300">🔐 1. Glassmorphism Login with 1-Click Switcher:</p>
+                    <div class="screenshot-frame">
+                        <img src="/portfolio_assets/login_page_1786179926255.png" alt="Login Screen">
+                    </div>
+                    <p class="text-[11px] text-slate-400 leading-tight">Interactive 1-click multi-role demo switcher allowing instant portal switching.</p>
                 </div>
-                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                    Admin Portal
-                </span>
-            </div>
-            <p class="text-sm text-slate-300 leading-relaxed">
-                4 Glass KPI cards for enrolled students, faculty roster, gross revenue collections, and aggregate attendance rates. Built with interactive Chart.js line charts for revenue trends, doughnut charts for attendance ratios, recent admissions, and quick action launchpads.
-            </p>
-            <div class="screenshot-frame bg-slate-900 p-2">
-                <img src="/portfolio_assets/admin_dashboard_1786180044274.png" alt="Admin Dashboard" class="w-full rounded-lg">
-            </div>
-        </div>
 
-        <div class="page-break"></div>
-
-        <!-- 3. STUDENT ENROLLMENT & 360 PROFILES (SCREENSHOT) -->
-        <div class="showcase-card p-8 md:p-10 space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Enrollment Subsystem</span>
-                    <h2 class="text-2xl font-bold font-display text-white mt-1">3. Student Admission Directory & 360° Profiles</h2>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                    Roster Management
-                </span>
-            </div>
-            <p class="text-sm text-slate-300 leading-relaxed">
-                Student directory with class filters, search bars, active/suspended status toggles, multi-step admission wizard (parent linking, transport fleet allocation, hostel dorm room, and automatic tuition fee invoice generation), and comprehensive 360-degree student demographic profiles.
-            </p>
-            <div class="screenshot-frame bg-slate-900 p-2">
-                <img src="/portfolio_assets/admin_students_1786180051597.png" alt="Student Enrollment" class="w-full rounded-lg">
-            </div>
-        </div>
-
-        <!-- 4. FEES ENGINE, BATCH INVOICING & HR CASH APPROVAL (SCREENSHOT) -->
-        <div class="showcase-card p-8 md:p-10 space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Finance & Invoicing</span>
-                    <h2 class="text-2xl font-bold font-display text-white mt-1">4. Fee Masters, 1-Click Batch Invoicing & HR Cash Approval Queue</h2>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                    Bursar Desk
-                </span>
-            </div>
-            <p class="text-sm text-slate-300 leading-relaxed">
-                Class fee masters, 1-click batch invoicing for entire grades simultaneously, manual offline payment entry desk, and a dedicated **HR Cash Approval Queue** allowing accounts staff to verify physical cash payments at the counter and click **"✓ Approve & Mark Paid"** with verified audit logs.
-            </p>
-            <div class="screenshot-frame bg-slate-900 p-2">
-                <img src="/portfolio_assets/admin_fees_1786180058226.png" alt="Fees & HR Queue" class="w-full rounded-lg">
-            </div>
-        </div>
-
-        <div class="page-break"></div>
-
-        <!-- 5. ENTERPRISE RBAC & CAPABILITY MATRIX (SCREENSHOT) -->
-        <div class="showcase-card p-8 md:p-10 space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Security Architecture</span>
-                    <h2 class="text-2xl font-bold font-display text-white mt-1">5. Enterprise RBAC & Security Capability Matrix</h2>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                    Access Control
-                </span>
-            </div>
-            <p class="text-sm text-slate-300 leading-relaxed">
-                Interactive RBAC engine supporting custom security role creation (e.g. *Exam Officer*, *Hostel Warden*, *Discipline Dean*), display name editing, granular action capabilities across 7 subsystems, 1-click grant/revoke toggles, and instant user role assignment desk.
-            </p>
-            <div class="screenshot-frame bg-slate-900 p-2">
-                <img src="/portfolio_assets/admin_roles_1786180068231.png" alt="RBAC Matrix" class="w-full rounded-lg">
-            </div>
-        </div>
-
-        <!-- 6. TEACHER WORKSPACE & ATTENDANCE MATRIX (SCREENSHOTS) -->
-        <div class="showcase-card p-8 md:p-10 space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-blue-400">Faculty Desk</span>
-                    <h2 class="text-2xl font-bold font-display text-white mt-1">6. Teacher Classroom Workspace & Daily Attendance Matrix</h2>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-blue-500/20 text-blue-300 border border-blue-500/30">
-                    Teacher Portal
-                </span>
-            </div>
-            <p class="text-sm text-slate-300 leading-relaxed">
-                Live teaching timetable schedule for the active day, pending grading counters, faculty bulletins, downloadable salary slips, and a fast **1-Click Batch Daily Attendance Matrix** (`Present`, `Late`, `Absent`, `Excused`) with custom student memos.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="screenshot-frame bg-slate-900 p-2">
-                    <img src="/portfolio_assets/teacher_dashboard_1786180131619.png" alt="Teacher Dashboard" class="w-full rounded-lg">
-                </div>
-                <div class="screenshot-frame bg-slate-900 p-2">
-                    <img src="/portfolio_assets/teacher_attendance_1786180142391.png" alt="Attendance Matrix" class="w-full rounded-lg">
+                <div class="space-y-2">
+                    <p class="text-xs font-bold text-purple-300">🏛️ 2. Super Admin Executive Command Dashboard:</p>
+                    <div class="screenshot-frame">
+                        <img src="/portfolio_assets/admin_dashboard_1786180044274.png" alt="Admin Dashboard">
+                    </div>
+                    <p class="text-[11px] text-slate-400 leading-tight">4 Glass KPI cards, live revenue line graphs, and aggregate attendance analytics.</p>
                 </div>
             </div>
         </div>
 
-        <div class="page-break"></div>
-
-        <!-- 7. EXAM ASSESSMENT GRADEBOOK (SCREENSHOT) -->
-        <div class="showcase-card p-8 md:p-10 space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-purple-400">Grading Engine</span>
-                    <h2 class="text-2xl font-bold font-display text-white mt-1">7. Examination Score Entry & Grade Rule Calculation</h2>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                    Gradebook Desk
-                </span>
-            </div>
-            <p class="text-sm text-slate-300 leading-relaxed">
-                Score entry matrix filtered by exam term and subject allocation. Evaluates student performance against institutional **Grade Rules** (`A+`, `A`, `B`, `C`, `D`, `F`, GPA 4.00) with passing mark criteria and constructive teacher remarks.
-            </p>
-            <div class="screenshot-frame bg-slate-900 p-2">
-                <img src="/portfolio_assets/teacher_gradebook_1786180147868.png" alt="Gradebook Matrix" class="w-full rounded-lg">
-            </div>
+        <div class="pt-4 border-t border-slate-800 text-xs text-slate-500 flex justify-between items-center">
+            <span>EduNova ERP & LMS Platform</span>
+            <span class="font-bold text-slate-400">Page 3 of 10 • Auth & Admin Portals</span>
+            <span>Developed by Muhammad Ibad</span>
         </div>
+    </div>
 
-        <!-- 8. STUDENT LEARNING HUB & OFFICIAL REPORT CARD (SCREENSHOTS) -->
-        <div class="showcase-card p-8 md:p-10 space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Student Portal</span>
-                    <h2 class="text-2xl font-bold font-display text-white mt-1">8. Student Learning Hub & Official Printable Report Card</h2>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                    Student Portal
-                </span>
+    <!-- ================= PAGE 4: STUDENT ADMISSION & BURSAR FEES ================= -->
+    <div class="a4-page flex flex-col justify-between">
+        <div>
+            <div class="mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Roster & Finance Subsystems</span>
+                <h2 class="text-xl font-bold font-display text-white mt-0.5">3. Student Admission Directory & 4. Fee Invoicing Engine</h2>
             </div>
-            <p class="text-sm text-slate-300 leading-relaxed">
-                Student dashboard with lecture schedules, upcoming exam dates, homework submissions (with PDF/ZIP uploads), lecture notes downloads, attendance tracking, and a **Print-Ready Official Term Report Card** with cumulative GPA and institutional seals.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="screenshot-frame bg-slate-900 p-2">
-                    <img src="/portfolio_assets/student_dashboard_1786180324818.png" alt="Student Dashboard" class="w-full rounded-lg">
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <p class="text-xs font-bold text-emerald-300">👨‍🎓 3. Student Enrollment Directory & 360° Profiles:</p>
+                    <div class="screenshot-frame">
+                        <img src="/portfolio_assets/admin_students_1786180051597.png" alt="Student Directory">
+                    </div>
+                    <p class="text-[11px] text-slate-400 leading-tight">Class filters, search bar, active/suspended toggles, and admission wizard.</p>
                 </div>
-                <div class="screenshot-frame bg-slate-900 p-2">
-                    <img src="/portfolio_assets/student_report_card_1786180334115.png" alt="Report Card" class="w-full rounded-lg">
+
+                <div class="space-y-2">
+                    <p class="text-xs font-bold text-amber-300">💳 4. Fee Masters, Batch Invoicing & HR Cash Queue:</p>
+                    <div class="screenshot-frame">
+                        <img src="/portfolio_assets/admin_fees_1786180058226.png" alt="Fee Invoicing">
+                    </div>
+                    <p class="text-[11px] text-slate-400 leading-tight">1-click batch invoicing and HR Cash Approval Queue for counter verification.</p>
                 </div>
             </div>
         </div>
 
-        <div class="page-break"></div>
+        <div class="pt-4 border-t border-slate-800 text-xs text-slate-500 flex justify-between items-center">
+            <span>EduNova ERP & LMS Platform</span>
+            <span class="font-bold text-slate-400">Page 4 of 10 • Students & Finance</span>
+            <span>Developed by Muhammad Ibad</span>
+        </div>
+    </div>
 
-        <!-- 9. PARENT GUARDIAN PORTAL & DUAL PAYMENTS (SCREENSHOTS) -->
-        <div class="showcase-card p-8 md:p-10 space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Family Engagement</span>
-                    <h2 class="text-2xl font-bold font-display text-white mt-1">9. Parent Portal with Multi-Child Switcher & Dual Payments</h2>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                    Parent Portal
-                </span>
+    <!-- ================= PAGE 5: ENTERPRISE RBAC & TEACHER WORKSPACE ================= -->
+    <div class="a4-page flex flex-col justify-between">
+        <div>
+            <div class="mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Security & Faculty Desks</span>
+                <h2 class="text-xl font-bold font-display text-white mt-0.5">5. RBAC Capability Matrix & 6. Teacher Workspace</h2>
             </div>
-            <p class="text-sm text-slate-300 leading-relaxed">
-                Multi-child switcher dropdown for parents with multiple enrolled children, real-time daily presence alerts, term academic grades, and **Dual Payment Modes** (Instant Online Card Payment with automated transaction references, or Cash at School Desk with HR counter verification).
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="screenshot-frame bg-slate-900 p-2">
-                    <img src="/portfolio_assets/parent_dashboard_1786180386010.png" alt="Parent Dashboard" class="w-full rounded-lg">
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <p class="text-xs font-bold text-indigo-300">🛡️ 5. Enterprise RBAC & Security Capability Matrix:</p>
+                    <div class="screenshot-frame">
+                        <img src="/portfolio_assets/admin_roles_1786180068231.png" alt="RBAC Matrix">
+                    </div>
+                    <p class="text-[11px] text-slate-400 leading-tight">Custom role creation and 1-click grant/revoke toggles for granular permissions.</p>
                 </div>
-                <div class="screenshot-frame bg-slate-900 p-2">
-                    <img src="/portfolio_assets/parent_fees_1786180394585.png" alt="Parent Fees" class="w-full rounded-lg">
+
+                <div class="space-y-2">
+                    <p class="text-xs font-bold text-blue-300">👨‍🏫 6. Faculty Classroom Workspace & Schedule:</p>
+                    <div class="screenshot-frame">
+                        <img src="/portfolio_assets/teacher_dashboard_1786180131619.png" alt="Teacher Workspace">
+                    </div>
+                    <p class="text-[11px] text-slate-400 leading-tight">Today's active lecture schedule, pending grading count, and salary slip links.</p>
                 </div>
             </div>
         </div>
 
-        <!-- 10. OFFICIAL PRINTABLE VOUCHERS: FEE RECEIPT & FACULTY PAYSLIP (SCREENSHOTS) -->
-        <div class="showcase-card p-8 md:p-10 space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Official Vouchers</span>
-                    <h2 class="text-2xl font-bold font-display text-white mt-1">10. Official Printable Fee Receipt & Faculty Salary Payslip Vouchers</h2>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                    Document Suite
-                </span>
+        <div class="pt-4 border-t border-slate-800 text-xs text-slate-500 flex justify-between items-center">
+            <span>EduNova ERP & LMS Platform</span>
+            <span class="font-bold text-slate-400">Page 5 of 10 • RBAC & Faculty Portal</span>
+            <span>Developed by Muhammad Ibad</span>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 6: ATTENDANCE MATRIX & EXAM GRADEBOOK ================= -->
+    <div class="a4-page flex flex-col justify-between">
+        <div>
+            <div class="mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-purple-400">Classroom Operations & Grading</span>
+                <h2 class="text-xl font-bold font-display text-white mt-0.5">7. Daily Attendance Matrix & 8. Assessment Gradebook</h2>
             </div>
-            <p class="text-sm text-slate-300 leading-relaxed">
-                High-resolution, print-ready (`window.print()`) A4 official vouchers with institutional tax IDs, verified transaction audit logs, itemized tuition fees, basic salary breakdowns with allowances/deductions, and authorized bursar/director seals.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <p class="text-xs font-bold text-slate-300 mb-2">🧾 Official Student Fee Receipt Voucher:</p>
-                    <div class="screenshot-frame bg-slate-900 p-2">
-                        <img src="/portfolio_assets/fee_receipt_1786180790620.png" alt="Fee Receipt Voucher" class="w-full rounded-lg">
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <p class="text-xs font-bold text-emerald-300">📝 7. 1-Click Batch Daily Attendance Recording Matrix:</p>
+                    <div class="screenshot-frame">
+                        <img src="/portfolio_assets/teacher_attendance_1786180142391.png" alt="Attendance Matrix">
+                    </div>
+                    <p class="text-[11px] text-slate-400 leading-tight">Fast 1-click batch selection (Present, Late, Absent, Excused) with student memos.</p>
+                </div>
+
+                <div class="space-y-2">
+                    <p class="text-xs font-bold text-purple-300">📊 8. Examination Score Entry & Grade Rule Calculation:</p>
+                    <div class="screenshot-frame">
+                        <img src="/portfolio_assets/teacher_gradebook_1786180147868.png" alt="Gradebook Matrix">
+                    </div>
+                    <p class="text-[11px] text-slate-400 leading-tight">Score entry evaluated against institutional Grade Rules (A+ to F, GPA 4.00).</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800 text-xs text-slate-500 flex justify-between items-center">
+            <span>EduNova ERP & LMS Platform</span>
+            <span class="font-bold text-slate-400">Page 6 of 10 • Attendance & Gradebook</span>
+            <span>Developed by Muhammad Ibad</span>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 7: STUDENT HUB & PRINTABLE REPORT CARD ================= -->
+    <div class="a4-page flex flex-col justify-between">
+        <div>
+            <div class="mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Learner Portal & Academic Credentials</span>
+                <h2 class="text-xl font-bold font-display text-white mt-0.5">9. Student Hub & 10. Official Printable Report Card</h2>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <p class="text-xs font-bold text-emerald-300">🎓 9. Student Learning Hub & Homework Deadlines:</p>
+                    <div class="screenshot-frame">
+                        <img src="/portfolio_assets/student_dashboard_1786180324818.png" alt="Student Dashboard">
+                    </div>
+                    <p class="text-[11px] text-slate-400 leading-tight">Weekly timetable, upcoming homework deadlines, and lecture handouts.</p>
+                </div>
+
+                <div class="space-y-2">
+                    <p class="text-xs font-bold text-indigo-300">📜 10. Official Print-Ready Student Term Report Card:</p>
+                    <div class="screenshot-frame">
+                        <img src="/portfolio_assets/student_report_card_1786180334115.png" alt="Report Card">
+                    </div>
+                    <p class="text-[11px] text-slate-400 leading-tight">Subject scores breakdown, cumulative GPA 4.00, dean signature, and institutional seal.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800 text-xs text-slate-500 flex justify-between items-center">
+            <span>EduNova ERP & LMS Platform</span>
+            <span class="font-bold text-slate-400">Page 7 of 10 • Student Hub & Credentials</span>
+            <span>Developed by Muhammad Ibad</span>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 8: PARENT PORTAL & DUAL PAYMENTS ================= -->
+    <div class="a4-page flex flex-col justify-between">
+        <div>
+            <div class="mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Guardian Engagement & Checkout</span>
+                <h2 class="text-xl font-bold font-display text-white mt-0.5">11. Parent Portal & 12. Tuition Fee Checkout Desk</h2>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <p class="text-xs font-bold text-indigo-300">👨‍👩‍👧 11. Parent Portal with Multi-Child Switcher:</p>
+                    <div class="screenshot-frame">
+                        <img src="/portfolio_assets/parent_dashboard_1786180386010.png" alt="Parent Dashboard">
+                    </div>
+                    <p class="text-[11px] text-slate-400 leading-tight">Multi-child switcher, live daily attendance presence alerts, and term grades.</p>
+                </div>
+
+                <div class="space-y-2">
+                    <p class="text-xs font-bold text-emerald-300">💳 12. Dual Payment Checkout (Card + Cash at Desk):</p>
+                    <div class="screenshot-frame">
+                        <img src="/portfolio_assets/parent_fees_1786180394585.png" alt="Parent Fees">
+                    </div>
+                    <p class="text-[11px] text-slate-400 leading-tight">Instant Online Card settlement or Cash at School Desk with HR counter verification.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800 text-xs text-slate-500 flex justify-between items-center">
+            <span>EduNova ERP & LMS Platform</span>
+            <span class="font-bold text-slate-400">Page 8 of 10 • Parent Portal & Checkout</span>
+            <span>Developed by Muhammad Ibad</span>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 9: OFFICIAL PRINTABLE VOUCHERS SUITE ================= -->
+    <div class="a4-page flex flex-col justify-between">
+        <div>
+            <div class="mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Verified Financial Documents</span>
+                <h2 class="text-xl font-bold font-display text-white mt-0.5">13. Official Fee Receipt & 14. Faculty Salary Payslip Vouchers</h2>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <p class="text-xs font-bold text-emerald-300">🧾 13. Official Student Fee Receipt Voucher:</p>
+                    <div class="screenshot-frame">
+                        <img src="/portfolio_assets/fee_receipt_1786180790620.png" alt="Fee Receipt Voucher">
+                    </div>
+                    <p class="text-[11px] text-slate-400 leading-tight">Printable A4 receipt with tax ID, verified audit trail, and authorized stamp.</p>
+                </div>
+
+                <div class="space-y-2">
+                    <p class="text-xs font-bold text-cyan-300">💰 14. Faculty Monthly Salary Payslip Voucher:</p>
+                    <div class="screenshot-frame">
+                        <img src="/portfolio_assets/payslip_1786180805239.png" alt="Faculty Payslip Voucher">
+                    </div>
+                    <p class="text-[11px] text-slate-400 leading-tight">Basic salary, allowances, statutory deductions, net pay, and direct file download.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800 text-xs text-slate-500 flex justify-between items-center">
+            <span>EduNova ERP & LMS Platform</span>
+            <span class="font-bold text-slate-400">Page 9 of 10 • Financial Vouchers</span>
+            <span>Developed by Muhammad Ibad</span>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 10: AUXILIARIES & SECURITY ARCHITECTURE ================= -->
+    <div class="a4-page flex flex-col justify-between">
+        <div>
+            <div class="mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Campus Auxiliaries & Security Architecture</span>
+                <h2 class="text-xl font-bold font-display text-white mt-0.5">15. Library Catalog, 16. Transport Fleet & Security Guards</h2>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="space-y-1.5">
+                    <p class="text-xs font-bold text-amber-300">📚 15. Library Catalog & Circulation:</p>
+                    <div class="screenshot-frame">
+                        <img src="/portfolio_assets/library_catalog_1786180821142.png" alt="Library Catalog">
                     </div>
                 </div>
-                <div>
-                    <p class="text-xs font-bold text-slate-300 mb-2">💰 Faculty Monthly Salary Payslip Voucher:</p>
-                    <div class="screenshot-frame bg-slate-900 p-2">
-                        <img src="/portfolio_assets/payslip_1786180805239.png" alt="Salary Payslip Voucher" class="w-full rounded-lg">
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="page-break"></div>
-
-        <!-- 11. AUXILIARY SUBSYSTEMS: LIBRARY & TRANSPORT FLEET (SCREENSHOTS) -->
-        <div class="showcase-card p-8 md:p-10 space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Auxiliary Suite</span>
-                    <h2 class="text-2xl font-bold font-display text-white mt-1">11. Auxiliary Subsystems: Library Catalog & Transport Fleet</h2>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                    Campus Operations
-                </span>
-            </div>
-            <p class="text-sm text-slate-300 leading-relaxed">
-                Integrated auxiliary subsystems supporting the complete campus ecosystem: **Library Catalog** with ISBN tracking, book stock, rack locations, and return ledger; **Transport Fleet** with vehicle plates, transit routes, driver rosters, and rider assignments.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <p class="text-xs font-bold text-slate-300 mb-2">📚 Library Catalog & Circulation:</p>
-                    <div class="screenshot-frame bg-slate-900 p-2">
-                        <img src="/portfolio_assets/library_catalog_1786180821142.png" alt="Library Catalog" class="w-full rounded-lg">
-                    </div>
-                </div>
-                <div>
-                    <p class="text-xs font-bold text-slate-300 mb-2">🚌 Transport & Transit Fleet Routes:</p>
-                    <div class="screenshot-frame bg-slate-900 p-2">
-                        <img src="/portfolio_assets/transport_fleet_1786180835463.png" alt="Transport Fleet" class="w-full rounded-lg">
+                <div class="space-y-1.5">
+                    <p class="text-xs font-bold text-amber-300">🚌 16. Transport Transit Fleet & Routes:</p>
+                    <div class="screenshot-frame">
+                        <img src="/portfolio_assets/transport_fleet_1786180835463.png" alt="Transport Fleet">
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 12. ENTERPRISE SECURITY & INTEGRITY -->
-        <div class="showcase-card p-8 md:p-10 space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-rose-400">Security & Integrity</span>
-                    <h2 class="text-2xl font-bold font-display text-white mt-1">12. Enterprise Security Middleware Guards</h2>
+            <!-- Security Middleware Summary Table -->
+            <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1.5 text-[10px]">
+                <p class="font-bold text-rose-400 text-xs">🛡️ 5 Enterprise Security Middleware Guards:</p>
+                <div class="grid grid-cols-2 gap-2 text-slate-300">
+                    <div>• <strong>EnsureAccountIsActive:</strong> Terminates sessions for inactive users.</div>
+                    <div>• <strong>RoleMiddleware:</strong> Enforces role boundaries across 4 portals.</div>
+                    <div>• <strong>PermissionMiddleware:</strong> Granular action-level capability checks.</div>
+                    <div>• <strong>VerifyParentChildAccess:</strong> Prevents IDOR cross-child data leaks.</div>
                 </div>
-                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-rose-500/20 text-rose-300 border border-rose-500/30">
-                    Security Layer
-                </span>
-            </div>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs">
-                    <thead class="border-b border-slate-800 text-slate-400 uppercase text-[10px] font-bold">
-                        <tr>
-                            <th class="py-3 px-4">Middleware Guard</th>
-                            <th class="py-3 px-4">Alias</th>
-                            <th class="py-3 px-4">Purpose & Protection Strategy</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-800/60 text-slate-300">
-                        <tr>
-                            <td class="py-3 px-4 font-mono font-bold text-indigo-400">EnsureAccountIsActive</td>
-                            <td class="py-3 px-4 font-mono">active</td>
-                            <td class="py-3 px-4">Terminates sessions instantly for deactivated or suspended accounts with custom alerts.</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4 font-mono font-bold text-indigo-400">RoleMiddleware</td>
-                            <td class="py-3 px-4 font-mono">role:admin,teacher...</td>
-                            <td class="py-3 px-4">Enforces role-level route barriers preventing cross-portal unauthorized access.</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4 font-mono font-bold text-indigo-400">PermissionMiddleware</td>
-                            <td class="py-3 px-4 font-mono">permission:student.admit...</td>
-                            <td class="py-3 px-4">Enforces granular capability checks for specific actions (create, edit, delete, approve).</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4 font-mono font-bold text-indigo-400">VerifyParentChildAccess</td>
-                            <td class="py-3 px-4 font-mono">parent.child</td>
-                            <td class="py-3 px-4">Prevents IDOR attacks by strictly verifying that requested student records belong to the logged-in guardian.</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4 font-mono font-bold text-indigo-400">VerifyStudentSelfAccess</td>
-                            <td class="py-3 px-4 font-mono">student.self</td>
-                            <td class="py-3 px-4">Isolates student data boundaries, preventing students from inspecting or accessing peer records.</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
 
-        <!-- PORTFOLIO FOOTER -->
-        <div class="text-center py-10 border-t border-slate-800 text-xs text-slate-500 space-y-2">
-            <p class="font-bold text-slate-300 text-sm">EduNova Enterprise School LMS & ERP Platform</p>
-            <p>Architected & Developed by <strong class="text-indigo-400">Muhammad Ibad</strong></p>
-            <p class="text-[11px] text-slate-500">Built with PHP 8.2+, Laravel 12, MySQL 8.0, Tailwind CSS, and Alpine.js.</p>
+        <div class="pt-4 border-t border-slate-800 text-xs text-slate-400 flex justify-between items-center">
+            <span>EduNova ERP & LMS Platform</span>
+            <span class="font-bold text-slate-300">Page 10 of 10 • Auxiliaries & Security Layer</span>
+            <span>Architected & Developed by <strong class="text-indigo-400">Muhammad Ibad</strong></span>
         </div>
-
     </div>
 
 </body>
