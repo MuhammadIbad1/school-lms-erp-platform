@@ -42,9 +42,6 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/portfolio', function () {
-    return response()->file(public_path('portfolio_showcase.html'));
-})->name('portfolio');
 
 /*
 |--------------------------------------------------------------------------

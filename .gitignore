@@ -22,3 +22,9 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+/public/portfolio_assets/
+/public/portfolio_showcase.html
+/public/EduNova_School_LMS_Portfolio.pdf
+/public/*.pdf
+generate_pdf*.mjs
+generate_pdf*.js
