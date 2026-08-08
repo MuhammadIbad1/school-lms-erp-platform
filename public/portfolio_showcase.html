@@ -7,46 +7,75 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #080c14;
-            color: #f8fafc;
+            background-color: #080c14 !important;
+            color: #f8fafc !important;
         }
         .font-display {
             font-family: 'Space Grotesk', sans-serif;
         }
         .showcase-card {
-            background: rgba(15, 23, 42, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(15, 23, 42, 0.85) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
             backdrop-filter: blur(16px);
             border-radius: 1.5rem;
         }
         .screenshot-frame {
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.18) !important;
             border-radius: 1rem;
             overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            background: #0f172a !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
             transition: transform 0.3s ease;
         }
         .screenshot-frame:hover {
             transform: scale(1.01);
         }
+        @page {
+            size: A4;
+            margin: 8mm;
+        }
         @media print {
             .no-print { display: none !important; }
-            body { background: white !important; color: #0f172a !important; padding: 0 !important; }
-            .showcase-card { background: white !important; border: 1px solid #cbd5e1 !important; box-shadow: none !important; color: #0f172a !important; break-inside: avoid; }
-            .screenshot-frame { box-shadow: none !important; border: 1px solid #cbd5e1 !important; break-inside: avoid; }
-            .page-break { page-break-before: always; }
-            h1, h2, h3, h4, h5, p, span, strong, td, th, li { color: #0f172a !important; }
-            .text-indigo-400, .text-indigo-300, .text-purple-400, .text-emerald-400 { color: #4338ca !important; }
-            .text-slate-400, .text-slate-500 { color: #475569 !important; }
-            .bg-slate-900, .bg-slate-950, .bg-slate-800 { background: #f8fafc !important; }
+            body { 
+                background-color: #080c14 !important; 
+                color: #f8fafc !important; 
+                padding: 0 !important; 
+            }
+            .showcase-card { 
+                background: #0f172a !important; 
+                border: 1px solid rgba(255, 255, 255, 0.15) !important; 
+                color: #f8fafc !important; 
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+                margin-bottom: 2rem !important;
+            }
+            .screenshot-frame { 
+                box-shadow: none !important; 
+                border: 1px solid rgba(255, 255, 255, 0.2) !important; 
+                background: #080c14 !important;
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+            }
+            .page-break { 
+                page-break-before: always !important; 
+                break-before: page !important;
+            }
+            h1, h2, h3, h4, h5, p, span, strong, td, th, li { 
+                color: inherit; 
+            }
         }
     </style>
 </head>
 <body class="p-4 md:p-12">
 
-    <!-- Sticky Top Print Action Bar -->
+    <!-- Sticky Top Action Bar with 1-Click Direct PDF Download -->
     <div class="no-print sticky top-6 z-50 max-w-5xl mx-auto mb-10 flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-slate-900/95 border border-slate-700 shadow-2xl backdrop-blur-md">
         <div class="flex items-center space-x-3">
             <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center font-bold text-white shadow-lg">
@@ -54,13 +83,17 @@
             </div>
             <div>
                 <h3 class="text-sm font-bold text-white">EduNova ERP & LMS — Master Technical Report</h3>
-                <p class="text-[11px] text-slate-400">All 12 Subsystems, Complete Functional Inventory & 16 High-Res Screenshots</p>
+                <p class="text-[11px] text-slate-400">Dark Glassmorphic UI Preserved in Full High-Resolution PDF</p>
             </div>
         </div>
         <div class="flex items-center space-x-3">
-            <button onclick="window.print()" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-lg shadow-indigo-600/40 transition flex items-center">
+            <a href="/EduNova_School_LMS_Portfolio.pdf" download="EduNova_School_LMS_Portfolio.pdf" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-lg shadow-emerald-600/40 transition flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                📥 1-Click Download PDF File
+            </a>
+            <button onclick="window.print()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-lg shadow-indigo-600/40 transition flex items-center">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-                🖨️ Export / Print as PDF
+                🖨️ Print Document
             </button>
             <a href="/login" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs transition">
                 Open Live App &rarr;
@@ -69,7 +102,7 @@
     </div>
 
     <!-- Main Presentation Container -->
-    <div class="max-w-5xl mx-auto space-y-16">
+    <div class="max-w-5xl mx-auto space-y-14">
         
         <!-- COVER / TITLE SECTION -->
         <div class="showcase-card p-10 md:p-14 text-center relative overflow-hidden">
@@ -87,38 +120,170 @@
 
             <!-- Tech Badges -->
             <div class="mt-8 flex flex-wrap justify-center gap-3 text-xs font-bold">
-                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-indigo-300">🚀 Laravel 12.x</span>
-                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-emerald-300">🐬 MySQL 8.0 Engine</span>
-                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-cyan-300">🎨 Glassmorphism & Tailwind CSS</span>
-                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-purple-300">⚡ Alpine.js Reactive Engine</span>
-                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-amber-300">🛡️ Enterprise RBAC Security</span>
-                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-rose-300">📊 Chart.js Analytics</span>
+                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-indigo-300">🚀 Laravel 12.x</span>
+                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-emerald-300">🐬 MySQL 8.0 Engine</span>
+                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-cyan-300">🎨 Glassmorphism & Tailwind CSS</span>
+                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-purple-300">⚡ Alpine.js Reactive Engine</span>
+                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-amber-300">🛡️ Enterprise RBAC Security</span>
+                <span class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-rose-300">📊 Chart.js Analytics</span>
             </div>
 
             <!-- Summary Metrics Table -->
             <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left">
-                <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
                     <p class="text-[10px] uppercase font-bold text-slate-400">Integrated Portals</p>
                     <p class="text-xl font-extrabold text-white mt-0.5">4 Workspaces</p>
                     <p class="text-[11px] text-indigo-400">Admin, Teacher, Student, Parent</p>
                 </div>
-                <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
                     <p class="text-[10px] uppercase font-bold text-slate-400">Database Models</p>
                     <p class="text-xl font-extrabold text-white mt-0.5">37 Models</p>
                     <p class="text-[11px] text-emerald-400">Relational Eloquent Schema</p>
                 </div>
-                <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
                     <p class="text-[10px] uppercase font-bold text-slate-400">Route Endpoints</p>
                     <p class="text-xl font-extrabold text-white mt-0.5">75 Routes</p>
                     <p class="text-[11px] text-purple-400">Guarded by 5 Middlewares</p>
                 </div>
-                <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
                     <p class="text-[10px] uppercase font-bold text-slate-400">Auxiliary Modules</p>
                     <p class="text-xl font-extrabold text-white mt-0.5">7 Modules</p>
                     <p class="text-[11px] text-amber-400">Library, Bus, Hostel, Payroll...</p>
                 </div>
             </div>
         </div>
+
+        <!-- COMPLETE SYSTEM FUNCTIONALITY INVENTORY (TABLE) -->
+        <div class="showcase-card p-8 md:p-10 space-y-6">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Complete Master Functionality Matrix</span>
+                <h2 class="text-2xl font-bold font-display text-white mt-1">Detailed Breakdown of All System Capabilities</h2>
+                <p class="text-xs text-slate-400 mt-1">Every feature, workflow, algorithm, and module implemented across the entire platform.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+                
+                <!-- Module 1 & 2 -->
+                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <h3 class="text-sm font-bold text-indigo-400">1. Authentication & Enterprise RBAC</h3>
+                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
+                        <li><strong>Multi-Role Login Gateway:</strong> Session auth with password hashing.</li>
+                        <li><strong>1-Click Demo Switcher:</strong> Instant switching between Admin, Teacher, Student, Parent.</li>
+                        <li><strong>Dynamic Role Creation:</strong> Create custom security roles with custom capability sets.</li>
+                        <li><strong>Visual Capability Matrix:</strong> 1-click grant/revoke toggles for granular permissions.</li>
+                        <li><strong>User Role Assignment:</strong> Instant role reassignment from user directory.</li>
+                        <li><strong>5 Custom Security Middlewares:</strong> `active`, `role`, `permission`, `parent.child`, `student.self`.</li>
+                    </ul>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <h3 class="text-sm font-bold text-emerald-400">2. Academic Hierarchy & Placements</h3>
+                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
+                        <li><strong>Academic Sessions:</strong> Manage school terms and active year scoping.</li>
+                        <li><strong>Classes & Sections:</strong> Dynamic class definitions with section splits.</li>
+                        <li><strong>Curriculum Subjects:</strong> Course codes, credit hours, and passing score criteria.</li>
+                        <li><strong>Time Slots Engine:</strong> Period durations, break intervals, and recess marking.</li>
+                        <li><strong>Teacher Allocation Matrix:</strong> Assign faculty to specific subjects and sections.</li>
+                    </ul>
+                </div>
+
+                <!-- Module 3 & 4 -->
+                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <h3 class="text-sm font-bold text-purple-400">3. Student Admission & 360° Profiles</h3>
+                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
+                        <li><strong>Multi-Step Admission Wizard:</strong> Demographics, parent linking, and login account.</li>
+                        <li><strong>Auxiliary Allocations:</strong> Assign transport fleet routes & hostel dorm rooms.</li>
+                        <li><strong>Automatic Invoicing:</strong> Auto-generates initial term fee invoice on enrollment.</li>
+                        <li><strong>Student Directory:</strong> Class filters, search bars, active/suspend account toggles.</li>
+                        <li><strong>360° Student Profile:</strong> Live attendance rate, exam marks, fee ledger, and hostel info.</li>
+                    </ul>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <h3 class="text-sm font-bold text-blue-400">4. Timetable & Daily Attendance</h3>
+                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
+                        <li><strong>Live Schedule Grid:</strong> Full weekly timetable with room allocations.</li>
+                        <li><strong>1-Click Batch Attendance:</strong> Teachers mark `Present`, `Late`, `Absent`, `Excused`.</li>
+                        <li><strong>Instant Mark All Present:</strong> Fast 1-click batch button for quick morning roll call.</li>
+                        <li><strong>Custom Attendance Remarks:</strong> Log absence reasons or late arrival notes.</li>
+                        <li><strong>Aggregate Presence Statistics:</strong> Live percentage calculation for students & parents.</li>
+                    </ul>
+                </div>
+
+                <!-- Module 5 & 6 -->
+                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <h3 class="text-sm font-bold text-amber-400">5. Examinations & Gradebook</h3>
+                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
+                        <li><strong>Exam Terms:</strong> Midterms, Finals, and Quizzes with start/end schedules.</li>
+                        <li><strong>Score Entry Matrix:</strong> Fast score input with max score constraints.</li>
+                        <li><strong>Grade Rule Calculation:</strong> Real-time evaluation into `A+`, `A`, `B`, `C`, `D`, `F` and GPA.</li>
+                        <li><strong>Teacher Feedback:</strong> Constructive evaluation notes per subject.</li>
+                        <li><strong>Official Report Card:</strong> Printable PDF-ready term report card with dean seal.</li>
+                    </ul>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <h3 class="text-sm font-bold text-pink-400">6. LMS Studio & Student Homework</h3>
+                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
+                        <li><strong>Study Materials Center:</strong> Upload lecture handouts, PDFs, and reading notes.</li>
+                        <li><strong>Homework Builder:</strong> Set title, instructions, specs attachment, and due date.</li>
+                        <li><strong>Student Solution Submissions:</strong> Upload homework files (PDF, ZIP, DOCX).</li>
+                        <li><strong>Grading Desk:</strong> Download submitted files, enter scores, and give feedback.</li>
+                        <li><strong>Overdue Tracking:</strong> Visual deadline indicators for pending student work.</li>
+                    </ul>
+                </div>
+
+                <!-- Module 7 & 8 -->
+                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <h3 class="text-sm font-bold text-emerald-400">7. Finance, Fees & Dual Payment</h3>
+                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
+                        <li><strong>Fee Category Masters:</strong> Tuition, Science Lab, Transport, Sports.</li>
+                        <li><strong>1-Click Batch Invoicing:</strong> Invoices entire classes simultaneously.</li>
+                        <li><strong>💳 Online Card Payment:</strong> Automated instant settlement with card checkout.</li>
+                        <li><strong>💵 Cash at School Desk:</strong> Request cash verification at school counter.</li>
+                        <li><strong>HR Cash Approval Queue:</strong> Verify physical cash and approve with 1-click.</li>
+                        <li><strong>Official Fee Receipts:</strong> Printable vouchers with transaction audit trails.</li>
+                    </ul>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <h3 class="text-sm font-bold text-cyan-400">8. Faculty Payroll & Payslips</h3>
+                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
+                        <li><strong>Salary Slip Generator:</strong> Monthly payroll calculation for teachers.</li>
+                        <li><strong>Allowances & Deductions:</strong> Academic allowances and statutory taxes.</li>
+                        <li><strong>Net Disbursed Pay:</strong> Automated take-home compensation calculation.</li>
+                        <li><strong>🖨️ Printable Payslip Voucher:</strong> A4 formatted with institutional seals.</li>
+                        <li><strong>💾 Direct File Download:</strong> 1-click export of official salary vouchers.</li>
+                    </ul>
+                </div>
+
+                <!-- Module 9 & 10 -->
+                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <h3 class="text-sm font-bold text-yellow-400">9. 7 Auxiliaries Suite</h3>
+                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
+                        <li><strong>📚 Library Catalog:</strong> ISBN lookup, quantity stock, and borrowing ledger.</li>
+                        <li><strong>🚌 Transport Fleet:</strong> Transit routes, fares, vehicle plates, driver contacts.</li>
+                        <li><strong>🏢 Hostel Residences:</strong> Dormitory buildings, room capacities, monthly rates.</li>
+                        <li><strong>📦 Inventory Assets:</strong> Equipment categories, stock quantities, and asset value.</li>
+                        <li><strong>📢 Notice Bulletins:</strong> Role-targeted broadcasts (`all`, `teacher`, `student`, `parent`).</li>
+                    </ul>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <h3 class="text-sm font-bold text-indigo-400">10. Real-Time Interactive Alerts</h3>
+                    <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
+                        <li><strong>Floating Toast Popup:</strong> Animated slide-in banner on new announcements.</li>
+                        <li><strong>Web Audio Chime:</strong> Synthesized pleasant audio cue on alert trigger.</li>
+                        <li><strong>Global Bell Drawer:</strong> Live unread badge count in sticky glass navbar.</li>
+                        <li><strong>LocalStorage Persistence:</strong> Dismissed notices remembered to prevent spam.</li>
+                        <li><strong>Flash Messages:</strong> Instant feedback on actions (success, error, info).</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="page-break"></div>
 
         <!-- 1. AUTHENTICATION & LOGIN GATEWAY (SCREENSHOT) -->
         <div class="showcase-card p-8 md:p-10 space-y-6">
@@ -139,8 +304,6 @@
             </div>
         </div>
 
-        <div class="page-break"></div>
-
         <!-- 2. SUPER ADMIN EXECUTIVE COMMAND (SCREENSHOT) -->
         <div class="showcase-card p-8 md:p-10 space-y-6">
             <div class="flex items-center justify-between">
@@ -159,6 +322,8 @@
                 <img src="/portfolio_assets/admin_dashboard_1786180044274.png" alt="Admin Dashboard" class="w-full rounded-lg">
             </div>
         </div>
+
+        <div class="page-break"></div>
 
         <!-- 3. STUDENT ENROLLMENT & 360 PROFILES (SCREENSHOT) -->
         <div class="showcase-card p-8 md:p-10 space-y-6">
@@ -179,8 +344,6 @@
             </div>
         </div>
 
-        <div class="page-break"></div>
-
         <!-- 4. FEES ENGINE, BATCH INVOICING & HR CASH APPROVAL (SCREENSHOT) -->
         <div class="showcase-card p-8 md:p-10 space-y-6">
             <div class="flex items-center justify-between">
@@ -200,6 +363,8 @@
             </div>
         </div>
 
+        <div class="page-break"></div>
+
         <!-- 5. ENTERPRISE RBAC & CAPABILITY MATRIX (SCREENSHOT) -->
         <div class="showcase-card p-8 md:p-10 space-y-6">
             <div class="flex items-center justify-between">
@@ -218,8 +383,6 @@
                 <img src="/portfolio_assets/admin_roles_1786180068231.png" alt="RBAC Matrix" class="w-full rounded-lg">
             </div>
         </div>
-
-        <div class="page-break"></div>
 
         <!-- 6. TEACHER WORKSPACE & ATTENDANCE MATRIX (SCREENSHOTS) -->
         <div class="showcase-card p-8 md:p-10 space-y-6">
@@ -245,6 +408,8 @@
             </div>
         </div>
 
+        <div class="page-break"></div>
+
         <!-- 7. EXAM ASSESSMENT GRADEBOOK (SCREENSHOT) -->
         <div class="showcase-card p-8 md:p-10 space-y-6">
             <div class="flex items-center justify-between">
@@ -263,8 +428,6 @@
                 <img src="/portfolio_assets/teacher_gradebook_1786180147868.png" alt="Gradebook Matrix" class="w-full rounded-lg">
             </div>
         </div>
-
-        <div class="page-break"></div>
 
         <!-- 8. STUDENT LEARNING HUB & OFFICIAL REPORT CARD (SCREENSHOTS) -->
         <div class="showcase-card p-8 md:p-10 space-y-6">
@@ -290,6 +453,8 @@
             </div>
         </div>
 
+        <div class="page-break"></div>
+
         <!-- 9. PARENT GUARDIAN PORTAL & DUAL PAYMENTS (SCREENSHOTS) -->
         <div class="showcase-card p-8 md:p-10 space-y-6">
             <div class="flex items-center justify-between">
@@ -313,8 +478,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="page-break"></div>
 
         <!-- 10. OFFICIAL PRINTABLE VOUCHERS: FEE RECEIPT & FACULTY PAYSLIP (SCREENSHOTS) -->
         <div class="showcase-card p-8 md:p-10 space-y-6">
@@ -346,6 +509,8 @@
             </div>
         </div>
 
+        <div class="page-break"></div>
+
         <!-- 11. AUXILIARY SUBSYSTEMS: LIBRARY & TRANSPORT FLEET (SCREENSHOTS) -->
         <div class="showcase-card p-8 md:p-10 space-y-6">
             <div class="flex items-center justify-between">
@@ -375,8 +540,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="page-break"></div>
 
         <!-- 12. ENTERPRISE SECURITY & INTEGRITY -->
         <div class="showcase-card p-8 md:p-10 space-y-6">
